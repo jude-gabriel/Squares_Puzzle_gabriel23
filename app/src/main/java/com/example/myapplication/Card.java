@@ -129,4 +129,8 @@ public class Card {
     public void setBottomY(float y){
         bottomY = y;
     }
+
+    public void setColor(int r, int g, int b){
+        color.setARGB(255, r, g, b);
+    }
 }

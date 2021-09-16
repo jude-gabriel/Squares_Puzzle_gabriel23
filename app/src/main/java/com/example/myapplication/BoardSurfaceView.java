@@ -27,6 +27,16 @@ public class BoardSurfaceView extends SurfaceView implements View.OnTouchListene
 
     @Override
     protected void onDraw(Canvas canvas){
+        for(int i = 0; i < cardArray.length; i ++){
+            for(int j = 0; j < cardArray.length; j++){
+                if(cardArray[i][j].getCardNum() == (i * 4) + j + 1){
+                    cardArray[i][j].setColor(0, 255, 0);
+                }
+                else{
+                    cardArray[i][j].setColor(255, 0, 0);
+                }
+            }
+        }
         for(int i = 0; i < 4; i++){
             for(int j = 0; j < 4; j++){
                 cardArray[i][j].draw(canvas);
