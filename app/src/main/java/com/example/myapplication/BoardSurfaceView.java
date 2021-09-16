@@ -103,8 +103,8 @@ public class BoardSurfaceView extends SurfaceView implements View.OnTouchListene
 
         for (int i = 0; i < cardArray.length; i++){
             for(int j = 0; j < cardArray.length; j++){
-                if((xClick > cardArray[i][j].getXVal()) && (xClick < cardArray[i][j].getBottomX())){
-                    if((yClick > cardArray[i][j].getYVal()) && (yClick < cardArray[i][j].getBottomY())){
+                if((xClick >= cardArray[i][j].getXVal()) && (xClick <= cardArray[i][j].getBottomX())){
+                    if((yClick >= cardArray[i][j].getYVal()) && (yClick <= cardArray[i][j].getBottomY())){
                         float x = cardArray[i][j].getXVal();
                         float y = cardArray[i][j].getYVal();
                         float bottomX = cardArray[i][j].getBottomX();
@@ -477,7 +477,7 @@ public class BoardSurfaceView extends SurfaceView implements View.OnTouchListene
         if((x > 0) && (x < cardArray.length - 1) && (y > 0) && (y < cardArray.length -1)){
             if(cardArray[x + 1][y].getColor() == 255){
                 location[0] = cardArray[x + 1][y].getXVal();
-                location[1] = cardArray[x + 1][y].getXVal();
+                location[1] = cardArray[x + 1][y].getYVal();
             }
             else if(cardArray[x - 1][y].getColor() == 255){
                 location[0] = cardArray[x - 1][y].getXVal();

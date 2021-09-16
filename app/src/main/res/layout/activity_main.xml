@@ -47,6 +47,20 @@
             android:layout_height="wrap_content"
             android:backgroundTint="#070707"
             android:text="RESET" />
+
+        <TextView
+            android:id="@+id/timerCounter"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="10"
+            android:textSize="50dp" />
+
+        <TextView
+            android:id="@+id/xyLocations"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="x, y"
+            android:textSize="50dp" />
     </LinearLayout>
 
     <LinearLayout
