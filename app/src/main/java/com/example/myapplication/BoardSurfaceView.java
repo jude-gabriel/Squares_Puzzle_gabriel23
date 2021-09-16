@@ -2,17 +2,19 @@ package com.example.myapplication;
 
 import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceView;
 import android.view.View;
 
-public class BoardSurfaceView extends SurfaceView implements View.OnTouchListener{
-    private Card cardArray[][];
-    private int numsArray[];
+import java.util.Timer;
+import java.util.TimerTask;
+
+public class BoardSurfaceView extends SurfaceView implements View.OnTouchListener, View.OnClickListener{
+
+    private Card[][] cardArray;
+    private int[] numsArray;
 
 
     public BoardSurfaceView(Context context, AttributeSet attrs) {
@@ -45,8 +47,8 @@ public class BoardSurfaceView extends SurfaceView implements View.OnTouchListene
     }
 
     public Card[][] createArray() {
-        int nums[] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15};
-        Card cArr[][] = new Card[4][4];
+        numsArray = new int[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16};
+        Card[][] cArr = new Card[4][4];
         int randNum;
         int xLoc = 0;
         int yLoc = 0;
@@ -335,4 +337,163 @@ public class BoardSurfaceView extends SurfaceView implements View.OnTouchListene
         return;
 
     }
+
+    @Override
+    public void onClick(View v) {
+        cardArray = createArray();
+        invalidate();
+    }
+
+
+
+    public float[] findXY(){
+        int x = -1;
+        int y = -1;
+        float[] location = new float[2];
+
+        //Find the blank card
+        for(int i = 0; i < cardArray.length; i++){
+            for(int j = 0; j < cardArray.length; j++){
+                if(cardArray[i][j].getCardNum() == 16){
+                    x = i;
+                    y = j;
+                }
+            }
+        }
+
+        //Case 1: it is in the top left corner
+        if((x == 0) && (y == 0)){
+            if(cardArray[x+1][y].getColor() == 255){
+                location[0] = cardArray[x + 1][y].getXVal();
+                location[1] = cardArray[x + 1][y].getYVal();
+            }
+            else{
+                location[0] = cardArray[x][y + 1].getXVal();
+                location[1] = cardArray[x][y + 1].getYVal();
+            }
+        }
+
+        //Case 2: it is in the top right corner
+        if((x == 0) && (y == cardArray.length - 1)){
+            if(cardArray[x + 1][y].getColor() == 255){
+                location[0] = cardArray[x + 1][y].getXVal();
+                location[1] = cardArray[x + 1][y].getYVal();
+            }
+            else{
+                location[0] = cardArray[x][y - 1].getXVal();
+                location[1] = cardArray[x][y - 1].getYVal();
+            }
+        }
+
+        //Case 3: It is in the bottom left corner
+        if((x == cardArray.length) && (y == 0)){
+            if(cardArray[x - 1][y].getColor() == 255){
+                location[0] = cardArray[x - 1][y].getXVal();
+                location[1] = cardArray[x - 1][y].getYVal();
+            }
+            else{
+                location[0] = cardArray[x][y + 1].getXVal();
+                location[1] = cardArray[x][y + 1].getYVal();
+            }
+        }
+
+        //Case 4: It is in the bottom right corner
+        if((x == cardArray.length - 1) && (y == cardArray.length - 1)){
+            if(cardArray[x - 1][y].getColor() == 255){
+                location[0] = cardArray[x - 1][y].getXVal();
+                location[1] = cardArray[x - 1][y].getYVal();
+            }
+            else{
+                location[0] = cardArray[x][y - 1].getXVal();
+                location[1] = cardArray[x][y - 1].getYVal();
+            }
+        }
+
+        //Case 5: It is in the top row
+        if((x == 0) && (y > 0) && ( y < cardArray.length - 1)){
+            if(cardArray[x][y + 1].getColor() == 255){
+                location[0] = cardArray[x][y + 1].getXVal();
+                location[1] = cardArray[x][y + 1].getYVal();
+            }
+            else if(cardArray[x][y - 1].getColor() == 255){
+                location[0] = cardArray[x][y - 1].getXVal();
+                location[1] = cardArray[x][y - 1].getYVal();
+            }
+            else{
+                location[0] = cardArray[x + 1][y].getXVal();
+                location[1] = cardArray[x + 1][y].getYVal();
+            }
+        }
+
+        //Case 6: It is on the bottom row
+        if((x == cardArray.length - 1) && (y > 0) && (y < cardArray.length- 1)){
+            if (cardArray[x][y + 1].getColor() == 255){
+                location[0] = cardArray[x][y + 1].getXVal();
+                location[1] = cardArray[x][y + 1].getYVal();
+            }
+            else if (cardArray[x][y - 1].getColor() == 255){
+                location[0] = cardArray[x][y - 1].getXVal();
+                location[1] = cardArray[x][y - 1].getYVal();
+            }
+            else{
+                location[0] = cardArray[x + 1][y].getXVal();
+                location[1] = cardArray[x + 1][y].getYVal();
+            }
+        }
+
+        //Case 7: It is on the left column
+        if((x > 0) && (x < cardArray.length - 1) && (y == 0)){
+            if(cardArray[x + 1][y].getColor() == 255){
+                location[0] = cardArray[x + 1][y].getXVal();
+                location[1] = cardArray[x + 1][y].getYVal();
+            }
+            else if(cardArray[x - 1][y].getColor() == 255){
+                location[0] = cardArray[x - 1][y].getXVal();
+                location[1] = cardArray[x - 1][y].getYVal();
+            }
+            else{
+                location[0] = cardArray[x][y + 1].getXVal();
+                location[1] = cardArray[x][y + 1].getYVal();
+            }
+        }
+
+        //Case 8: It is on the right column
+        if((x > 0) && (x < cardArray.length - 1) && (y == cardArray.length - 1)){
+            if(cardArray[x + 1][y].getColor() == 255){
+                location[0] = cardArray[x + 1][y].getXVal();
+                location[1] = cardArray[x + 1][y].getYVal();
+            }
+            else if(cardArray[x - 1][y].getColor() == 255){
+                location[0] = cardArray[x - 1][y].getXVal();
+                location[1] = cardArray[x - 1][y].getYVal();
+            }
+            else{
+                location[0] = cardArray[x][y - 1].getXVal();
+                location[1] = cardArray[x][y - 1].getYVal();
+            }
+        }
+
+        //Case 9: It is not an edge or corner
+        if((x > 0) && (x < cardArray.length - 1) && (y > 0) && (y < cardArray.length -1)){
+            if(cardArray[x + 1][y].getColor() == 255){
+                location[0] = cardArray[x + 1][y].getXVal();
+                location[1] = cardArray[x + 1][y].getXVal();
+            }
+            else if(cardArray[x - 1][y].getColor() == 255){
+                location[0] = cardArray[x - 1][y].getXVal();
+                location[1] = cardArray[x - 1][y].getYVal();
+            }
+            else if(cardArray[x][y + 1].getColor() == 255){
+                location[0] = cardArray[x][y + 1].getXVal();
+                location[1] = cardArray[x][y + 1].getYVal();
+            }
+            else{
+                location[0] = cardArray[x][y - 1].getXVal();
+                location[1] = cardArray[x][y - 1].getYVal();
+            }
+        }
+
+        return location;
+    }
+
 }

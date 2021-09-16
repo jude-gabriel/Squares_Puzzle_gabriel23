@@ -15,6 +15,7 @@ public class Card {
     private final int height;
     private final int width;
     private String numString;
+    private int redNum;
 
     /**
      * Constructor for the Card class
@@ -55,6 +56,7 @@ public class Card {
 
         bottomY = 0;
         bottomX = 0;
+        redNum = 0;
 
     }
 
@@ -132,5 +134,15 @@ public class Card {
 
     public void setColor(int r, int g, int b){
         color.setARGB(255, r, g, b);
+        if(r == 0){
+            redNum = 0;
+        }
+        if(r == 255){
+            redNum = 255;
+        }
+    }
+
+    public int getColor(){
+        return redNum;
     }
 }
