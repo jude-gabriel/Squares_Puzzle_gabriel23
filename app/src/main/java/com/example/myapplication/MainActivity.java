@@ -29,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
         //Set the board to respond to the On Touch Listener
         boardSurfaceView.setOnTouchListener(boardSurfaceView);
 
+
         Button resetButton = (Button) findViewById(R.id.resetButton);
         resetButton.setOnClickListener(boardSurfaceView);
 
@@ -50,16 +51,17 @@ public class MainActivity extends AppCompatActivity {
                 theTimer.start();
             }
         };
-        theTimer.start();
 
+        theTimer.start();
 
     }
 
     public void makeTimedClick(){
         if(boardSurfaceView != null){
             float[] xyVals = boardSurfaceView.findXY();
+            int[] ijVals = boardSurfaceView.findCard(xyVals[0], xyVals[1]);
 
-            if(boardSurfaceView.arraySwap(xyVals[0], xyVals[1]) == true){
+            if(boardSurfaceView.arraySwap(ijVals[0], ijVals[1]) == true){
                 boardSurfaceView.invalidate();
             }
 

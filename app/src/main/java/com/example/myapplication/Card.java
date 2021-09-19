@@ -145,4 +145,11 @@ public class Card {
     public int getColor(){
         return redNum;
     }
+
+    public void setNewPosition(int xTop, int xBottom, int yTop, int yBottom){
+
+
+
+    }
+
 }
