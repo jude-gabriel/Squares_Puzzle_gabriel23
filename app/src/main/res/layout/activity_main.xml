@@ -4,14 +4,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#000000"
     tools:context=".MainActivity">
 
     <LinearLayout
         android:id="@+id/linearLayout"
         android:layout_width="900dp"
         android:layout_height="match_parent"
-        android:layout_marginTop="50dp"
-        android:layout_marginBottom="50dp"
+        android:layout_marginStart="75dp"
+        android:layout_marginTop="100dp"
+        android:layout_marginEnd="75dp"
+        android:layout_marginBottom="25dp"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -22,16 +25,19 @@
             android:id="@+id/boardSurfaceView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            android:background="#000000" />
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/linearLayout2"
         android:layout_width="188dp"
         android:layout_height="898dp"
-        android:layout_marginStart="50dp"
+        android:layout_marginStart="75dp"
         android:layout_marginTop="50dp"
         android:layout_marginEnd="50dp"
         android:layout_marginBottom="50dp"
+        android:background="#000000"
         android:gravity="center"
         android:orientation="vertical"
         android:paddingLeft="10dp"
@@ -45,32 +51,83 @@
             android:id="@+id/resetButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:backgroundTint="#070707"
+            android:backgroundTint="#0DEC16"
             android:text="RESET" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayout3"
+        android:layout_width="188dp"
+        android:layout_height="898dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginEnd="75dp"
+        android:layout_marginBottom="50dp"
+        android:background="#000000"
+        android:gravity="center"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/linearLayout"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/xyLocations"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Computer will make a move in:"
+            android:textAlignment="center"
+            android:textColor="#FFFFFF"
+            android:textSize="25dp"
+            android:textStyle="bold|italic" />
 
         <TextView
             android:id="@+id/timerCounter"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="10"
+            android:textAlignment="center"
+            android:textColor="#FFFFFF"
             android:textSize="50dp" />
 
         <TextView
-            android:id="@+id/xyLocations"
+            android:id="@+id/secondsTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="x, y"
-            android:textSize="50dp" />
+            android:text="seconds."
+            android:textAlignment="center"
+            android:textColor="#FFFFFF"
+            android:textSize="25sp"
+            android:textStyle="bold|italic" />
     </LinearLayout>
 
     <LinearLayout
-        android:layout_width="188dp"
-        android:layout_height="898dp"
-        android:layout_marginTop="50dp"
-        android:layout_marginBottom="50dp"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:layout_editor_absoluteX="1091dp"></LinearLayout>
+        android:layout_width="852dp"
+        android:layout_height="98dp"
+        android:layout_marginStart="1dp"
+        android:layout_marginTop="1dp"
+        android:layout_marginEnd="1dp"
+        android:layout_marginBottom="1dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout"
+        app:layout_constraintEnd_toStartOf="@+id/linearLayout3"
+        app:layout_constraintStart_toEndOf="@+id/linearLayout2"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/titleTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="15 square puzzle"
+            android:textAlignment="center"
+            android:textAllCaps="true"
+            android:textColor="#F6F5F5"
+            android:textSize="50sp"
+            android:textStyle="bold|italic"
+            tools:text="15 square puzzle" />
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

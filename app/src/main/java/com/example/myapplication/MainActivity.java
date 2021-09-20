@@ -36,40 +36,49 @@ public class MainActivity extends AppCompatActivity {
         TextView timerText = (TextView) findViewById(R.id.timerCounter);
         xyLocations = (TextView) findViewById(R.id.xyLocations);
 
+
         theTimer = new CountDownTimer(10000, 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
-                if(timerText != null){
-                    timerText.setText("" + (int)(millisUntilFinished / 1000));
+                if (timerText != null) {
+                    timerText.setText("" + (int) (millisUntilFinished / 1000));
+                    if(boardSurfaceView.didUserClick() == true){
+                        theTimer.cancel();
+                        theTimer.start();
+                    }
                 }
             }
 
             @Override
             public void onFinish() {
-                makeTimedClick();
-                xyLocations.setText("Hit onFinished");
+                if(boardSurfaceView.didUserClick() == false) {
+                    makeTimedClick();
+                }
                 theTimer.start();
             }
         };
 
-        theTimer.start();
 
+        theTimer.start();
     }
+
+
+
 
     public void makeTimedClick(){
         if(boardSurfaceView != null){
             float[] xyVals = boardSurfaceView.findXY();
             int[] ijVals = boardSurfaceView.findCard(xyVals[0], xyVals[1]);
-
+            String cardNum =  boardSurfaceView.getCardNum(ijVals[0], ijVals[1]);
             if(boardSurfaceView.arraySwap(ijVals[0], ijVals[1]) == true){
                 boardSurfaceView.invalidate();
             }
 
-            xyLocations.setText("" + xyVals[0] + ", " + xyVals[1]);
+
 
             int duration = Toast.LENGTH_LONG;
             Context context = getApplicationContext();
-            CharSequence chars = "At " + xyVals[0] + ", " + xyVals[1];
+            CharSequence chars = "Computer moved card " + cardNum;
 
             Toast.makeText(context, chars, duration).show();
         }

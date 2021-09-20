@@ -2,12 +2,14 @@ package com.example.myapplication;
 
 import android.content.Context;
 import android.graphics.Canvas;
+import android.os.CountDownTimer;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.DragEvent;
 import android.view.MotionEvent;
 import android.view.SurfaceView;
 import android.view.View;
+import android.widget.TextView;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -27,9 +29,8 @@ public class BoardSurfaceView extends SurfaceView implements View.OnTouchListene
     float blankCardTopY = -1;
     float blankCardBottomX = -1;
     float blankCardBottomY = -1;
+    boolean userClick = false;
 
-
-    Canvas myCanvas;
 
 
     public BoardSurfaceView(Context context, AttributeSet attrs) {
@@ -40,11 +41,12 @@ public class BoardSurfaceView extends SurfaceView implements View.OnTouchListene
 
 
         setWillNotDraw(false);
+
+
     }
 
     @Override
     protected void onDraw(Canvas canvas){
-        myCanvas = canvas;
         for(int i = 0; i < cardArray.length; i ++){
             for(int j = 0; j < cardArray.length; j++){
                 if(cardArray[i][j].getCardNum() == (i * 4) + j + 1){
@@ -108,73 +110,65 @@ public class BoardSurfaceView extends SurfaceView implements View.OnTouchListene
     @Override
     public boolean onTouch(View v, MotionEvent event) {
         int[] thisCard;
+        userClick = true;
 
 
-        switch(event.getActionMasked()){
+        switch(event.getActionMasked()) {
             case MotionEvent.ACTION_DOWN:
-                Log.d("ACTION DOWN", "ACTION DOWN was hit");
                 xLoc = event.getX();
-                yLoc =  event.getY();
+                yLoc = event.getY();
                 thisCard = findCard(xLoc, yLoc);
                 xCard = thisCard[0];
                 yCard = thisCard[1];
-                if(xCard == -1){
+                if (xCard == -1) {
                     return false;
                 }
-                if(cardArray[xCard][yCard].getCardNum() == 16){
+                if (cardArray[xCard][yCard].getCardNum() == 16) {
                     return false;
                 }
                 origX = cardArray[xCard][yCard].getXVal();
                 origY = cardArray[xCard][yCard].getYVal();
                 origBottomX = cardArray[xCard][yCard].getBottomX();
                 origBottomY = cardArray[xCard][yCard].getBottomY();
+                userClick = true;
                 break;
 
             case MotionEvent.ACTION_MOVE:
-                Log.d("ACTION MOVE", "ACTION MOVE was hit");
-
                 cardArray[xCard][yCard].setXVal(event.getX() - 100);
                 cardArray[xCard][yCard].setYVal(event.getY() - 100);
                 cardArray[xCard][yCard].setBottomX(event.getX() + 200 - 100);
                 cardArray[xCard][yCard].setBottomY(event.getY() + 200 - 100);
+                userClick = true;
                 invalidate();
+
+
                 break;
 
             case MotionEvent.ACTION_UP:
-                Log.d("ACTION UP", "ACTION UP was hit");
-                if(arraySwap(xCard, yCard) == true){
+                if (arraySwap(xCard, yCard) == true) {
+                    userClick = false;
                     invalidate();
                     return true;
                 }
-
                 else{
                     cardArray[xCard][yCard].setXVal(origX);
                     cardArray[xCard][yCard].setYVal(origY);
                     cardArray[xCard][yCard].setBottomX(origX + 200);
                     cardArray[xCard][yCard].setBottomY(origY + 200);
+                    origX = -1;
+                    origY = -1;
+                    origBottomX = -1;
+                    origBottomY = -1;
+                    blankCardTopX = -1;
+                    blankCardTopY = -1;
+                    blankCardBottomX = -1;
+                    blankCardBottomY = -1;
+                    userClick = false;
                     invalidate();
                 }
+                break;
         }
         return true;
-
-
-
-
-
-
-
-
-
-//        //Existing Code
-//        float xLoc = event.getX();
-//        float yLoc =  event.getY();
-//
-//
-//        if(arraySwap(xLoc, yLoc) == true){
-//            invalidate();
-//            return true;
-//        }
-//        return false;
     }
 
 
@@ -198,50 +192,11 @@ public class BoardSurfaceView extends SurfaceView implements View.OnTouchListene
     }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     public boolean arraySwap (int i, int j){
         Card cardToSwitch = null;
         int iNum = -1;
         int jNum = -1;
 
-
-
-//        for (int i = 0; i < cardArray.length; i++){
-//            for(int j = 0; j < cardArray.length; j++){
-//                if((xClick >= cardArray[i][j].getXVal()) && (xClick <= cardArray[i][j].getBottomX())){
-//                    if((yClick >= cardArray[i][j].getYVal()) && (yClick <= cardArray[i][j].getBottomY())){
-//                        float x = cardArray[i][j].getXVal();
-//                        float y = cardArray[i][j].getYVal();
-//                        float bottomX = cardArray[i][j].getBottomX();
-//                        float bottomY = cardArray[i][j].getBottomY();
-//
-//                        cardToSwitch = cardArray[i][j];
-//                        iNum = i;
-//                        jNum = j;
-//                        break;
-//                    }
-//                }
-//            }
-//        }
 
         cardToSwitch = cardArray[i][j];
         iNum = i;
@@ -646,50 +601,11 @@ public class BoardSurfaceView extends SurfaceView implements View.OnTouchListene
     }
 
 
+    public String getCardNum(int i, int j){
+        return cardArray[i][j].getNumString();
+    }
 
-
-
-//    @Override
-//    public boolean onDrag(View v, DragEvent event) {
-//        float xStart = 0;
-//        float yStart = 0;
-//        float xEnd = 0;
-//        float yEnd = 0;
-//        float cardXTop = 0;
-//        float cardXBottom = 0;
-//        float cardYTop = 0;
-//        float cardYBottom = 0;
-//
-//        if(event.getAction() == DragEvent.ACTION_DRAG_STARTED){
-//            xStart = event.getX();
-//            yStart = event.getY();
-//        }
-//
-//        if (event.getAction() == DragEvent.ACTION_DRAG_ENTERED){
-//            xEnd = event.getX();
-//            yEnd = event.getY();
-//        }
-//
-//        for(int i = 0; i < cardArray.length; i++){
-//            for(int j = 0; j < cardArray.length; j++){
-//                if(cardArray[i][j].getCardNum() == 16){
-//                    cardXTop = cardArray[i][j].getXVal();
-//                    cardXBottom = cardArray[i][j].getBottomX();
-//                    cardYTop = cardArray[i][j].getYVal();
-//                    cardYBottom = cardArray[i][j].getBottomY();
-//                }
-//            }
-//        }
-//
-//        if((xEnd >= cardXTop) && (xEnd <= cardXBottom)){
-//            if((yEnd >= cardYTop) && (yEnd <= cardYBottom)){
-//                if(arraySwap(xStart, yStart) == true){
-//                    invalidate();
-//                    return true;
-//                }
-//            }
-//        }
-//
-//        return false;
-//    }
+    public boolean didUserClick(){
+        return userClick;
+    }
 }
