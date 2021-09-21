@@ -89,9 +89,6 @@ public class BoardSurfaceView extends SurfaceView implements View.OnTouchListene
      */
     @Override
     protected void onDraw(Canvas canvas){
-
-
-
         //Check if a card is in the correct spot. If it is set the color to green.
         //Otherwise set the color to red
         for(int i = 0; i < cardArray.length; i ++){
@@ -123,7 +120,6 @@ public class BoardSurfaceView extends SurfaceView implements View.OnTouchListene
                 }
             }
         }
-
     }
 
 
@@ -176,7 +172,6 @@ public class BoardSurfaceView extends SurfaceView implements View.OnTouchListene
         else{
              return randNum = randNums();
         }
-
     }
 
 
@@ -310,24 +305,6 @@ public class BoardSurfaceView extends SurfaceView implements View.OnTouchListene
                         invalidate();
                     }
                 }
-
-                /* MAY NOT BE NEEDED */
-//                else{
-//                    cardArray[xCard][yCard].setXVal(origX);
-//                    cardArray[xCard][yCard].setYVal(origY);
-//                    cardArray[xCard][yCard].setBottomX(origX + 200);
-//                    cardArray[xCard][yCard].setBottomY(origY + 200);
-//                    origX = -1;
-//                    origY = -1;
-//                    origBottomX = -1;
-//                    origBottomY = -1;
-//                    blankCardTopX = -1;
-//                    blankCardTopY = -1;
-//                    blankCardBottomX = -1;
-//                    blankCardBottomY = -1;
-//                    userClick = false;
-//                    invalidate();
-//                }
                 break;
         }
 
@@ -392,8 +369,8 @@ public class BoardSurfaceView extends SurfaceView implements View.OnTouchListene
             return false;
         }
 
-        /* For each case, check the surrounnding neighbors of the card. If one of the neighbors is
-            the blank carduse the temporary values to switch the cards values, then call
+        /* For each case, check the surrounding neighbors of the card. If one of the neighbors is
+            the blank card use the temporary values to switch the cards values, then call
             swapLocation to swap the location values of the cards
          */
         else{
@@ -600,8 +577,8 @@ public class BoardSurfaceView extends SurfaceView implements View.OnTouchListene
      * @param secondCard
      */
     public void swapLocation(Card firstCard, Card secondCard){
-        Card tempCard = new Card(firstCard.getXVal(), firstCard.getYVal(), 0);
-
+        //Check if origX is -1, meaning the computer made the move. If it is populate the
+        //original cards values
         if(origX == -1){
             origX = secondCard.getXVal();
             origY = secondCard.getYVal();
@@ -613,16 +590,19 @@ public class BoardSurfaceView extends SurfaceView implements View.OnTouchListene
             blankCardBottomY = firstCard.getBottomY();
         }
 
+        //Set the second cards location to be the first cards
         secondCard.setXVal(blankCardTopX);
         secondCard.setYVal(blankCardTopY);
         secondCard.setBottomX(blankCardBottomX);
         secondCard.setBottomY(blankCardBottomY);
 
+        //Set the first cards location to be the second cards
         firstCard.setXVal(origX);
         firstCard.setYVal(origY);
         firstCard.setBottomX(origBottomX);
         firstCard.setBottomY(origBottomY);
 
+        //Reset all values to check for the next computer move
         origX = -1;
         origY = -1;
         origBottomX = -1;
@@ -633,7 +613,6 @@ public class BoardSurfaceView extends SurfaceView implements View.OnTouchListene
         blankCardBottomY = -1;
 
         return;
-
     }
 
 
