@@ -96,6 +96,11 @@ public class BoardSurfaceView extends SurfaceView implements View.OnTouchListene
                 if(cardArray[i][j].getCardNum() == (i * 4) + j + 1){
                     cardArray[i][j].setColor(0, 255, 0);
                 }
+                else {
+                    if (cardArray[i][j].getCardNum() == 16){
+                        cardArray[i][j].setColor(255, 0, 0);
+                    }
+                }
             }
         }
 
