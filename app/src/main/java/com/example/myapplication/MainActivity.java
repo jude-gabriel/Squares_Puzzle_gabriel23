@@ -74,8 +74,6 @@ public class MainActivity extends AppCompatActivity {
                 boardSurfaceView.invalidate();
             }
 
-
-
             int duration = Toast.LENGTH_LONG;
             Context context = getApplicationContext();
             CharSequence chars = "Computer moved card " + cardNum;

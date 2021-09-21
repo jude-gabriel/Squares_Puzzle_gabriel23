@@ -8,7 +8,7 @@
     tools:context=".MainActivity">
 
     <LinearLayout
-        android:id="@+id/linearLayout"
+        android:id="@+id/boardLayout"
         android:layout_width="900dp"
         android:layout_height="match_parent"
         android:layout_marginStart="75dp"
@@ -30,7 +30,7 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/linearLayout2"
+        android:id="@+id/movesLayout"
         android:layout_width="188dp"
         android:layout_height="898dp"
         android:layout_marginStart="75dp"
@@ -43,7 +43,7 @@
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/linearLayout"
+        app:layout_constraintEnd_toStartOf="@+id/boardLayout"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -51,26 +51,8 @@
             android:id="@+id/resetButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:backgroundTint="#0DEC16"
+            android:backgroundTint="#0D3DEC"
             android:text="RESET" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/linearLayout3"
-        android:layout_width="188dp"
-        android:layout_height="898dp"
-        android:layout_marginStart="5dp"
-        android:layout_marginTop="50dp"
-        android:layout_marginEnd="75dp"
-        android:layout_marginBottom="50dp"
-        android:background="#000000"
-        android:gravity="center"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/linearLayout"
-        app:layout_constraintTop_toTopOf="parent">
 
         <TextView
             android:id="@+id/xyLocations"
@@ -100,9 +82,53 @@
             android:textColor="#FFFFFF"
             android:textSize="25sp"
             android:textStyle="bold|italic" />
+
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/howToPlayLayout"
+        android:layout_width="188dp"
+        android:layout_height="898dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginEnd="75dp"
+        android:layout_marginBottom="50dp"
+        android:background="#000000"
+        android:gravity="center"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/boardLayout"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/howToPlayText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="HOW TO PLAY:"
+            android:textColor="#FFFFFF"
+            android:textSize="25sp"
+            android:textStyle="bold|italic" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="5dp"
+            android:background="#F6F4F4"
+            android:orientation="horizontal"></LinearLayout>
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Drag a neighboring square over the blank square to swap. The timer will start counting after your first move."
+            android:textColor="#FFFFFF"
+            android:textSize="20sp"
+            android:textStyle="bold|italic" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/titleLayout"
         android:layout_width="852dp"
         android:layout_height="98dp"
         android:layout_marginStart="1dp"
@@ -111,9 +137,9 @@
         android:layout_marginBottom="1dp"
         android:gravity="center"
         android:orientation="horizontal"
-        app:layout_constraintBottom_toTopOf="@+id/linearLayout"
-        app:layout_constraintEnd_toStartOf="@+id/linearLayout3"
-        app:layout_constraintStart_toEndOf="@+id/linearLayout2"
+        app:layout_constraintBottom_toTopOf="@+id/boardLayout"
+        app:layout_constraintEnd_toStartOf="@+id/howToPlayLayout"
+        app:layout_constraintStart_toEndOf="@+id/movesLayout"
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
