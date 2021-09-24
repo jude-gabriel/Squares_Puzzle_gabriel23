@@ -1,20 +1,33 @@
+/**
+ * Card.java
+ *
+ * This file creates a card and sets up all methods required for the
+ * board to access all required information about the card.
+ *
+ * Author: Jude Gabriel
+ * Version: 9.23.2021
+ *
+ * All code was written solely by me using Android API unless cited otherwise
+ */
+
+
 package com.example.myapplication;
 
 import android.graphics.Canvas;
 import android.graphics.Paint;
 
 public class Card {
-    //Initialize instance variables
+    //Create private variables
     private float xVal;
     private float yVal;
     private float bottomX;
     private float bottomY;
-    private int cardNum;
-    private Paint color;
-    private Paint text;
+    private final int cardNum;
+    private final Paint color;
+    private final Paint text;
     private final int height;
     private final int width;
-    private String numString;
+    private final String numString;
     private int redNum;
 
 
@@ -26,7 +39,7 @@ public class Card {
      * @param num   The card's number
      */
     public Card(float x, float y, int num){
-        //set variables equal to constructor values
+        //Set variables equal to constructor values
         xVal = x;
         yVal = y;
         cardNum = num;
@@ -44,7 +57,7 @@ public class Card {
         height = 200;
         width = 200;
 
-        //Set the text;
+        //Set the text keeping the 16th card blank
         if(num == 16){
             numString = "";
         }
@@ -72,7 +85,7 @@ public class Card {
         //Draw the rectangle on the canvas
         canvas.drawRect(xVal, yVal, bottomX, bottomY, color);
 
-        //Center text in teh rectangle and then draw on canvas
+        //Center text in the rectangle and then draw on canvas
         float textRight = xVal + (width / 2) - 20;
         float textDown = yVal + (height / 2);
         canvas.drawText(numString, textRight, textDown, text);
@@ -93,7 +106,7 @@ public class Card {
     /**
      * Getter for the x value
      *
-     * @return
+     * @return the upper x coordinate of the rectangle
      */
     public float getXVal(){
         return xVal;
@@ -114,7 +127,7 @@ public class Card {
     /**
      * Getter for the y value
      *
-     * @return the upper y coordinate of the recatngle
+     * @return the upper y coordinate of the rectangle
      */
     public float getYVal(){
         return yVal;

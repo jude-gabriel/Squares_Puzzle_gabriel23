@@ -1,3 +1,20 @@
+/**
+ * MainActivity.java
+ *
+ * This file contains the view set up so that the interactive board
+ * displays on screen. This file also contains all necessary listeners
+ * for user interaction
+ *
+ * Enhancements: Countdown timer, Computer makes moves, Toast so the user can see
+ * which card the computer moved
+ *
+ * Author: Jude Gabriel
+ * Version: 9.23.2021
+ *
+ * All code was written solely by me using Android API unless cited otherwise
+ */
+
+
 package com.example.myapplication;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -9,8 +26,6 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.util.Timer;
-import java.util.TimerTask;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -34,6 +49,17 @@ public class MainActivity extends AppCompatActivity {
 
         //Create a text view for the timer's countdown
         TextView timerText = (TextView) findViewById(R.id.timerCounter);
+
+
+        /**
+         * External Citation
+         *  Date:       16 September 2021
+         *  Problem:    Could not get a timer to be functional. i.e no timer would
+         *              correctly count down and make a move
+         *  Resource:   Dr. Triblehorn
+         *  Solution:   Use a countdown timer instead of a normal timer, thus eliminating
+         *              the need for a timer task
+         */
 
         //Create a countdown timer and set-up the onTick and onFinish methods
         theTimer = new CountDownTimer(10000, 1000) {

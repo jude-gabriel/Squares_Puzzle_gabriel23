@@ -1,20 +1,34 @@
+/**
+ * BoardSurfaceView.java
+ *
+ * This file contains all logic necessary for the game to be played.
+ * It creates the board using a set of cards and allows the user to interact with
+ * the cards
+ *
+ * Enhancements: Allows user to drag, turns the card being dragged blue,
+ *                  displays the card being dragged always on top
+ *
+ * Author: Jude Gabriel
+ * Version: 9.23.2021
+ *
+ * All code was written solely by me using Android API unless cited otherwise
+ */
+
+
 package com.example.myapplication;
 
 import android.content.Context;
 import android.graphics.Canvas;
-import android.os.CountDownTimer;
 import android.util.AttributeSet;
-import android.util.Log;
-import android.view.DragEvent;
 import android.view.MotionEvent;
 import android.view.SurfaceView;
 import android.view.View;
-import android.widget.TextView;
 
-import java.util.Timer;
-import java.util.TimerTask;
 
-public class BoardSurfaceView extends SurfaceView implements View.OnTouchListener, View.OnClickListener{
+public class BoardSurfaceView extends SurfaceView implements View.OnTouchListener,
+        View.OnClickListener{
+
+    //Create private variables
     private Card[][] cardArray;
     private int[] numsArray;
     private int xCard;
@@ -89,18 +103,20 @@ public class BoardSurfaceView extends SurfaceView implements View.OnTouchListene
      */
     @Override
     protected void onDraw(Canvas canvas){
-        //Check if a card is in the correct spot. If it is set the color to green.
-        //Otherwise set the color to red
+        //Check if the user is dragging, if so do not change color because
+        // it is blue. If not then check if a card is in the correct spot.
+        // If it is set the color to green. Otherwise set the color to red
         for(int i = 0; i < cardArray.length; i ++){
             for(int j = 0; j < cardArray.length; j++){
-                if(cardArray[i][j].getCardNum() == (i * 4) + j + 1){
-                    cardArray[i][j].setColor(0, 255, 0);
-                }
-                else {
-                    if (cardArray[i][j].getCardNum() == 16){
+                if(!didDrag) {
+                    if (cardArray[i][j].getCardNum() == (i * 4) + j + 1) {
+                        cardArray[i][j].setColor(0, 255, 0);
+
+                    } else {
                         cardArray[i][j].setColor(255, 0, 0);
                     }
                 }
+
             }
         }
 
@@ -112,9 +128,14 @@ public class BoardSurfaceView extends SurfaceView implements View.OnTouchListene
             }
         }
 
+        //Redraw the card the player is moving so that it is always on top
+        if((xCard != -1) && (yCard != -1)){
+            cardArray[xCard][yCard].draw(canvas);
+        }
+
         //Find the rectangular coordinates of the blank square.
-        //This is done here so that we know the location of the blank card after every move
-        //and so that it is stored in a constant for easier access
+        //This is done here so that we know the location of the blank card after
+        //every move and so that it is stored in a constant for easier access
         for(int i = 0; i < 4; i++){
             for(int j = 0; j < 4; j++){
                 if(cardArray[i][j].getCardNum() == 16){
@@ -148,7 +169,6 @@ public class BoardSurfaceView extends SurfaceView implements View.OnTouchListene
             for (int j = 0; j < 4; j++) {
                 randNum = randNums();
                 cArr[i][j] = new Card((j * 350) + 250,(i * 350) + 20, randNum);
-
             }
         }
 
@@ -166,8 +186,8 @@ public class BoardSurfaceView extends SurfaceView implements View.OnTouchListene
         //Create a random number between 0-16
         int randNum = (int)(Math.random() * 16);
 
-        //Go to the random number's index in the number array. Pull the random number and
-        //set the index value to zero. Return the random number
+        //Go to the random number's index in the number array. Pull the random number
+        //and set the index value to zero. Return the random number
         if(numsArray[randNum] != 0){
             numsArray[randNum] = 0;
             return randNum + 1;
@@ -182,11 +202,11 @@ public class BoardSurfaceView extends SurfaceView implements View.OnTouchListene
 
     /**
      * Collects the information pertaining to a user dragging a card.
-     * Checks if the user drags it, display the drag and card swap, and reset the clock
+     * Checks if the user drags it, display the drag and card swap, then reset the clock
      *
      * @param v         The Board surface view
      * @param event     The drag event
-     * @return
+     * @return true for each state of the event
      */
     @Override
     public boolean onTouch(View v, MotionEvent event) {
@@ -195,7 +215,16 @@ public class BoardSurfaceView extends SurfaceView implements View.OnTouchListene
         int[] thisCard;
         userClick = true;
 
-        //Switch case for the action to find analyze which state of the drag we are in
+        /**
+         * External Citation
+         *  Date:    19 September 2021
+         *  Problem: onTouch would only hit the case for action down
+         *  Resource: https://stackoverflow.com/questions/24287292/returning-true-
+         *              and-false-in-ontouch
+         *  Solution: I needed to return true. This resource helped me discover that
+         */
+
+        //Switch case for the action to analyze which state of the drag we are in
         switch(event.getActionMasked()) {
 
             //Case 1: User initially clicks card
@@ -208,7 +237,8 @@ public class BoardSurfaceView extends SurfaceView implements View.OnTouchListene
                 xCard = thisCard[0];
                 yCard = thisCard[1];
 
-                //Error check to see if the user grabbed an invalid card or no card at all
+                //Error check to see if the user grabbed an invalid card
+                //or no card at all
                 if (xCard == -1) {
                     return false;
                 }
@@ -233,12 +263,13 @@ public class BoardSurfaceView extends SurfaceView implements View.OnTouchListene
                 cardArray[xCard][yCard].setBottomX(event.getX() + 200 - 100);
                 cardArray[xCard][yCard].setBottomY(event.getY() + 200 - 100);
 
-                //Update userClick to reset clock and didDrag so that just a click is invalid
+                //Update userClick to reset clock and didDrag so
+                //that just a click is invalid
                 userClick = true;
                 didDrag = true;
 
-
-                //Change the cards color to blue to show it is being dragged and call invalidate
+                //Change the cards color to blue to show it is being dragged
+                // and call invalidate
                 //to reflect the dragging motion and change in color
                 cardArray[xCard][yCard].setColor(0, 0, 255);
                 invalidate();
@@ -252,14 +283,14 @@ public class BoardSurfaceView extends SurfaceView implements View.OnTouchListene
                 //Error check to ensure the user dragged and did not just click
                 //Then check if user dropped the card within the empty card
                 if(didDrag == true) {
-                    if ((event.getX() >= blankCardTopX) && (event.getX() <= blankCardBottomX) &&
+                    if ((event.getX() >= blankCardTopX) &&
+                            (event.getX() <= blankCardBottomX) &&
                             (event.getY() >= blankCardTopY) &&
                             (event.getY() <= blankCardBottomY)) {
 
                         //Check if the card and the empty card are neighbors
                         if (arraySwap(xCard, yCard) == true) {
-
-                            //Update userClick adn didDrag to false to continue the clock
+                            //Update userClick to continue the clock
                             //and reset didDrag for the next drag
                             userClick = false;
                             didDrag = false;
@@ -269,10 +300,10 @@ public class BoardSurfaceView extends SurfaceView implements View.OnTouchListene
                             return true;
                         }
 
-                        //If arraySwap is not true then the card was not a neighbor of the blank
-                        //card. Send the card back to it's original location and reset the
-                        //original coordinates for the next iteration. Call invalidate to reflect
-                        //the changes
+                        //If arraySwap is not true then the card was not a neighbor
+                        //of the blank card. Send the card back to it's original
+                        // location and reset the original coordinates for the
+                        //next iteration. Call invalidate to reflect the changes
                         else {
                             cardArray[xCard][yCard].setXVal(origX);
                             cardArray[xCard][yCard].setYVal(origY);
@@ -287,12 +318,13 @@ public class BoardSurfaceView extends SurfaceView implements View.OnTouchListene
                             blankCardBottomX = -1;
                             blankCardBottomY = -1;
                             userClick = false;
+                            didDrag = false;
                             invalidate();
                         }
                     }
 
                     //If the user did not drop the card into the empty cards bounds then
-                    //send the card back to its original location
+                    //send the card back to its original location and reset all values
                     else {
                         cardArray[xCard][yCard].setXVal(origX);
                         cardArray[xCard][yCard].setYVal(origY);
@@ -307,6 +339,7 @@ public class BoardSurfaceView extends SurfaceView implements View.OnTouchListene
                         blankCardBottomX = -1;
                         blankCardBottomY = -1;
                         userClick = false;
+                        didDrag = false;
                         invalidate();
                     }
                 }
@@ -319,7 +352,7 @@ public class BoardSurfaceView extends SurfaceView implements View.OnTouchListene
 
 
     /**
-     * Find the card contained located at the x and y coordinates the user clicked
+     * Find the card located at the x and y coordinates the user clicked
      *
      * @param x     The x coordinate of the users click
      * @param y     The y coordinate of the users click
@@ -328,15 +361,17 @@ public class BoardSurfaceView extends SurfaceView implements View.OnTouchListene
      *          card that was clicked
      */
     public int[] findCard(float x, float y){
-        //Initalize the card's indices at zero
+        //Initialize the card's indices at zero
         int[] cardLoc = {-1, -1};
 
         //Iterate through the card array and find which card contains the xy coordinates
         //of the users click
         for(int i = 0; i < cardArray.length; i++){
             for(int j = 0; j < cardArray.length; j++){
-                if((x >= cardArray[i][j].getXVal()) && (x <= cardArray[i][j].getBottomX())){
-                    if((y >= cardArray[i][j].getYVal()) && (y <= cardArray[i][j].getBottomY())){
+                if((x >= cardArray[i][j].getXVal()) &&
+                        (x <= cardArray[i][j].getBottomX())){
+                    if((y >= cardArray[i][j].getYVal()) &&
+                            (y <= cardArray[i][j].getBottomY())){
                         cardLoc[0] = i;
                         cardLoc[1] = j;
                     }
@@ -350,16 +385,18 @@ public class BoardSurfaceView extends SurfaceView implements View.OnTouchListene
 
 
     /**
-     * Checks if the dragged card is neighbors with the blank card and swaps their locations
-     * if they are neighbors
+     * Checks if the dragged card is neighbors with the blank card and
+     * swaps their locations if they are neighbors
      *
      * @param i     The row index of the dragged card
      * @param j     The column index of the dragged card
      *
-     * @return true if the card was swapped with the blank card, return false otherwise
+     * @return true if the card was swapped with the blank card,
+     *          return false otherwise
      */
     public boolean arraySwap (int i, int j){
-        //Initialize a temporary card for switching values and index values for row and column
+        //Initialize a temporary card for switching values and index values for
+        //row and column
         Card cardToSwitch = null;
         int iNum = -1;
         int jNum = -1;
@@ -374,9 +411,9 @@ public class BoardSurfaceView extends SurfaceView implements View.OnTouchListene
             return false;
         }
 
-        /* For each case, check the surrounding neighbors of the card. If one of the neighbors is
-            the blank card use the temporary values to switch the cards values, then call
-            swapLocation to swap the location values of the cards
+        /* For each case, check the surrounding neighbors of the card. If one of
+         the neighbors is the blank card use the temporary values to switch the
+         cards values, then call swapLocation to swap the location values of the cards
          */
         else{
             //Case 1 it is not a corner or an edge, check if it is a neighbor
@@ -568,7 +605,6 @@ public class BoardSurfaceView extends SurfaceView implements View.OnTouchListene
             else{
                 return false;
             }
-
         }
 
         //This case should never be hit, if it is, something is wrong
@@ -576,10 +612,10 @@ public class BoardSurfaceView extends SurfaceView implements View.OnTouchListene
     }
 
     /**
-     * Swap the locations of the fist and secoind card.
+     * Swap the locations of the fist and second card.
      *
-     * @param firstCard
-     * @param secondCard
+     * @param firstCard     The first card to swap locations
+     * @param secondCard    The second card to swap locations
      */
     public void swapLocation(Card firstCard, Card secondCard){
         //Check if origX is -1, meaning the computer made the move. If it is populate the
@@ -641,7 +677,7 @@ public class BoardSurfaceView extends SurfaceView implements View.OnTouchListene
      * Find the location of a card neighboring the blank card. This allows the computer
      * player to make it's random selection
      *
-     * @return a float array containg the xy coordinates of the neighboring card
+     * @return a float array containing the xy coordinates of the neighboring card
      */
     public float[] findXY(){
         //Initialize the xy coordinates and the array
@@ -739,8 +775,8 @@ public class BoardSurfaceView extends SurfaceView implements View.OnTouchListene
                 location[1] = cardArray[x][y - 1].getYVal();
             }
             else{
-                location[0] = cardArray[x + 1][y].getXVal();
-                location[1] = cardArray[x + 1][y].getYVal();
+                location[0] = cardArray[x - 1][y].getXVal();
+                location[1] = cardArray[x - 1][y].getYVal();
             }
         }
 
