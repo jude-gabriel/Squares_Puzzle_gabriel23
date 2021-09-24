@@ -5,6 +5,9 @@
  * displays on screen. This file also contains all necessary listeners
  * for user interaction
  *
+ * Author: Jude Gabriel
+ * Version: 9.23.2021
+ *
  * Enhancements: A countdown timer where the computer makes a move every 10
  *                  seconds if the user does not
  *
@@ -18,9 +21,6 @@
  *                  it does not get hidden
  *
  *                Toast on screen so the user can see which move the computer made
- *
- * Author: Jude Gabriel
- * Version: 9.23.2021
  *
  * All code was written solely by me using Android API unless cited otherwise
  */
@@ -40,6 +40,7 @@ import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
+    //Create the board and timer
     private CountDownTimer theTimer;
     private BoardSurfaceView boardSurfaceView;
 
@@ -67,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
          *  Date:       16 September 2021
          *  Problem:    Could not get a timer to be functional. i.e no timer would
          *              correctly count down and make a move
-         *  Resource:   Dr. Triblehorn
+         *  Resource:   Dr. Tribelhorn
          *  Solution:   Use a countdown timer instead of a normal timer, thus eliminating
          *              the need for a timer task
          */

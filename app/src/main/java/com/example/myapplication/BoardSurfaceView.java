@@ -5,9 +5,6 @@
  * It creates the board using a set of cards and allows the user to interact with
  * the cards
  *
- * Enhancements: Allows user to drag, turns the card being dragged blue,
- *                  displays the card being dragged always on top
- *
  * Author: Jude Gabriel
  * Version: 9.23.2021
  *
