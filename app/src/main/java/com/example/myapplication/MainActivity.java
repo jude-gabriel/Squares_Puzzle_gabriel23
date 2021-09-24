@@ -5,8 +5,19 @@
  * displays on screen. This file also contains all necessary listeners
  * for user interaction
  *
- * Enhancements: Countdown timer, Computer makes moves, Toast so the user can see
- * which card the computer moved
+ * Enhancements: A countdown timer where the computer makes a move every 10
+ *                  seconds if the user does not
+ *
+ *                Draggable Squares
+ *
+ *                Invalid squares snap into their respective spots
+ *
+ *                Squares being dragged light up blue
+ *
+ *                The square being dragged is always on top of other objects so
+ *                  it does not get hidden
+ *
+ *                Toast on screen so the user can see which move the computer made
  *
  * Author: Jude Gabriel
  * Version: 9.23.2021
